@@ -1,0 +1,31 @@
+{
+  "ids":{
+    "User": 2
+  },
+  "models":{
+    "User": {
+      "1": {
+        "fname": "john",
+        "mname": "james",
+        "lname": "doe",
+        "email": "john@anonymous.com",
+        "phone": "123456789",
+        "role": "superadmin",
+        "address": "No 12, 123 street",
+        "created": "2022-12-12",
+        "modified": "2022-12-13"
+      },
+      "2": {
+        "fname": "dunkirk",
+        "mname": "lolli",
+        "lname": "rester",
+        "email": "rester@anonymous.com",
+        "phone": "1234534389",
+        "role": "admin",
+        "address": "No 12, 124 street",
+        "created": "2022-12-12",
+        "modified": "2022-12-13"
+      }
+    }
+  }
+}
