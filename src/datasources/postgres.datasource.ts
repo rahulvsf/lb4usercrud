@@ -1,15 +1,17 @@
 import {inject, lifeCycleObserver, LifeCycleObserver} from '@loopback/core';
 import {juggler} from '@loopback/repository';
+import * as dotenv from 'dotenv';
+dotenv.config();
 
 const config = {
   name: 'postgres',
   connector: 'postgresql',
-  url: 'postgres://postgres:postgres123@127.0.0.1:5432/test_erp',
-  host: '127.0.0.1',
-  port: 5432,
-  user: 'postgres',
-  password: 'postgres123',
-  database: 'test_erp',
+  url: process.env.POSTGRES_URL,
+  host: process.env.POSTGRES_HOST,
+  port: Number(process.env.POSTGRES_PORT),
+  user: process.env.POSTGRES_USER,
+  password: process.env.POSTGRES_PASSWORD,
+  database: process.env.POSTGRES_DB,
 };
 
 // Observe application's life cycle to disconnect the datasource when
