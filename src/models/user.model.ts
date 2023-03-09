@@ -12,9 +12,8 @@ export class User extends Entity {
     type: 'number',
     id: true,
     generated: false,
-    required: true,
   })
-  id: number;
+  id?: number;
 
   @property({
     type: 'string',
@@ -57,7 +56,6 @@ export class User extends Entity {
     required: true,
   })
   created: string;
-
 
   constructor(data?: Partial<User>) {
     super(data);
