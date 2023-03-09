@@ -8,6 +8,7 @@ export class MySequence extends MiddlewareSequence {
   }
 
   async handle(context: RequestContext) {
+    // should change to referer
     if (
       context.request.headers.host?.includes(
         process.env.ALLOWED_ORIGIN as string,
@@ -23,7 +24,7 @@ export class MySequence extends MiddlewareSequence {
       const endDate = new Date();
       this.log('CLOSING AT ' + endDate.toLocaleTimeString());
     } else {
-      context.response.send('INVALID ORIGIN');
+      context.response.status(403).send('INVALID ORIGIN');
     }
   }
 }
