@@ -27,6 +27,10 @@ export class Customer extends Entity {
   })
   address: string;
 
+  @property({
+    type: 'number',
+  })
+  userId?: number;
 
   constructor(data?: Partial<Customer>) {
     super(data);

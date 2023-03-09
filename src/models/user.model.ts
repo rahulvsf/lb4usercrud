@@ -1,4 +1,6 @@
-import {Entity, model, property} from '@loopback/repository';
+import {Entity, model, property, hasOne} from '@loopback/repository';
+import {Customer} from './customer.model';
+import {Role} from './role.model';
 
 @model()
 export class User extends Entity {
@@ -38,13 +40,6 @@ export class User extends Entity {
     required: true,
   })
   phone: string;
-
-  @property({
-    type: 'string',
-    required: true,
-  })
-  role: string;
-
   @property({
     type: 'string',
     required: true,
@@ -56,6 +51,12 @@ export class User extends Entity {
     required: true,
   })
   created: string;
+
+  @hasOne(() => Customer)
+  customer: Customer;
+
+  @hasOne(() => Role)
+  role: Role;
 
   constructor(data?: Partial<User>) {
     super(data);
