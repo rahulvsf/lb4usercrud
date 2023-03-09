@@ -1,4 +1,5 @@
 import {Entity, model, property} from '@loopback/repository';
+import {Roles} from '../enums/roles';
 
 @model()
 export class Role extends Entity {
@@ -17,6 +18,9 @@ export class Role extends Entity {
 
   @property({
     type: 'string',
+    jsonSchema: {
+      enum: Object.keys(Roles),
+    },
     required: true,
   })
   key: string;
