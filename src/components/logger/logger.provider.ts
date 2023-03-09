@@ -1,8 +1,7 @@
 import {Provider, ValueOrPromise} from '@loopback/context';
 import winston from 'winston';
 import {LogTypes} from './logger.keys';
-
-type LoggerFunction = (level: number, message: string) => void;
+import {LoggerFunction} from './logger.types';
 
 const loggerOptions = {
   level: 'info',

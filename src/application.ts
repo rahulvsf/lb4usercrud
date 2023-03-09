@@ -8,6 +8,7 @@ import {
 } from '@loopback/rest-explorer';
 import {ServiceMixin} from '@loopback/service-proxy';
 import path from 'path';
+import {LoggerComponent} from './components/logger';
 import {MySequence} from './sequence';
 
 export {ApplicationConfig};
@@ -29,6 +30,8 @@ export class UserappApplication extends BootMixin(
       path: '/explorer',
     });
     this.component(RestExplorerComponent);
+    // initialize custom winston logger component
+    this.component(LoggerComponent);
 
     this.projectRoot = __dirname;
     // Customize @loopback/boot Booter Conventions here

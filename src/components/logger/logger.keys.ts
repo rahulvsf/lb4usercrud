@@ -1,8 +1,12 @@
 import {BindingKey} from '@loopback/context';
+import {LoggerFunction} from './logger.types';
 
 export namespace LoggerComponentKeys {
   export const CUSTOM_LOGGER = BindingKey.create<LogTypes>(
     'logger-component.logger',
+  );
+  export const CUSTOM_LOGGER_FN = BindingKey.create<LoggerFunction>(
+    'logger-component.logger-fn',
   );
 }
 
