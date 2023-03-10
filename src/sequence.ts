@@ -49,11 +49,9 @@ export class MySequence implements SequenceHandler {
       }
       const {request, response} = context;
 
-      console.log('INVOKING MIDDLEWARE');
       const finished = await this.invokeMiddleware(context, {
         middlewareList: [jwtMiddleware],
       });
-      console.log(finished);
       if (finished) return;
 
       const route = this.findRoute(request);
