@@ -3,6 +3,7 @@ import {
   FindRoute,
   HttpErrors,
   InvokeMethod,
+  InvokeMiddleware,
   ParseParams,
   Reject,
   RequestContext,
@@ -14,9 +15,13 @@ import {
 import * as dotenv from 'dotenv';
 import {LoggerComponentKeys, LogTypes} from './components/logger/logger.keys';
 import {LoggerFunction} from './components/logger/logger.types';
+import {jwtMiddleware} from './middleware/jwtheader';
 dotenv.config();
 
 export class MySequence implements SequenceHandler {
+  @inject(SequenceActions.INVOKE_MIDDLEWARE, {optional: true})
+  protected invokeMiddleware: InvokeMiddleware = () => false;
+
   constructor(
     @inject(SequenceActions.FIND_ROUTE)
     protected findRoute: FindRoute,
@@ -43,6 +48,13 @@ export class MySequence implements SequenceHandler {
         throw new HttpErrors.Forbidden('INVALID ORIGIN');
       }
       const {request, response} = context;
+
+      console.log('INVOKING MIDDLEWARE');
+      const finished = await this.invokeMiddleware(context, {
+        middlewareList: [jwtMiddleware],
+      });
+      console.log(finished);
+      if (finished) return;
 
       const route = this.findRoute(request);
       const args = await this.parseParams(request, route);

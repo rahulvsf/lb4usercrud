@@ -9,6 +9,7 @@ import {
 import {ServiceMixin} from '@loopback/service-proxy';
 import path from 'path';
 import {LoggerComponent} from './components/logger';
+import {jwtMiddleware} from './middleware/jwtheader';
 import {MySequence} from './sequence';
 
 export {ApplicationConfig};
@@ -18,6 +19,8 @@ export class UserappApplication extends BootMixin(
 ) {
   constructor(options: ApplicationConfig = {}) {
     super(options);
+    // confirgure middleware
+    this.middleware(jwtMiddleware);
 
     // Set up the custom sequence
     this.sequence(MySequence);
