@@ -1,6 +1,7 @@
 import {inject} from '@loopback/core';
 import {
   FindRoute,
+  HttpErrors,
   InvokeMethod,
   ParseParams,
   Reject,
@@ -32,12 +33,15 @@ export class MySequence implements SequenceHandler {
   ) {}
 
   async handle(context: RequestContext): Promise<void> {
-    // should change to referer
-    if (
-      context.request.headers.host?.includes(
-        process.env.ALLOWED_ORIGIN as string,
-      )
-    ) {
+    try {
+      if (
+        // TODO: should change to referer
+        !context.request.headers.host?.includes(
+          process.env.ALLOWED_ORIGIN as string,
+        )
+      ) {
+        throw new HttpErrors.Forbidden('INVALID ORIGIN');
+      }
       const {request, response} = context;
 
       const route = this.findRoute(request);
@@ -47,8 +51,9 @@ export class MySequence implements SequenceHandler {
       const result = await this.invoke(route, args);
       this.send(response, result);
       this.logEnding();
-    } else {
-      this.reject(context, {name: '403', message: 'Not allowed'});
+    } catch (error) {
+      this.logError();
+      this.reject(context, error);
     }
   }
 
@@ -69,5 +74,13 @@ export class MySequence implements SequenceHandler {
   private logEnding() {
     const endDate = new Date();
     this.log('CLOSING AT ' + endDate.toLocaleTimeString());
+  }
+
+  private logError() {
+    const errorTime = new Date();
+    this.log(
+      'Error Occured at - ' + errorTime.toLocaleTimeString(),
+      LogTypes.ERROR,
+    );
   }
 }
