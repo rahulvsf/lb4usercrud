@@ -2,7 +2,7 @@ import {inject} from '@loopback/core';
 import {
   FindRoute,
   InvokeMethod,
-  parseOperationArgs,
+  ParseParams,
   Reject,
   RequestContext,
   RestBindings,
@@ -11,23 +11,25 @@ import {
   SequenceHandler,
 } from '@loopback/rest';
 import * as dotenv from 'dotenv';
+import {LoggerComponentKeys} from './components/logger/logger.keys';
+import {LoggerFunction} from './components/logger/logger.types';
 dotenv.config();
 
 export class MySequence implements SequenceHandler {
   constructor(
     @inject(SequenceActions.FIND_ROUTE)
     protected findRoute: FindRoute,
-    @inject(RestBindings.SequenceActions.PARSE_PARAMS)
+    @inject(RestBindings.SequenceActions.INVOKE_METHOD)
     protected invoke: InvokeMethod,
+    @inject(RestBindings.SequenceActions.PARSE_PARAMS)
+    protected parseParams: ParseParams,
     @inject(RestBindings.SequenceActions.SEND)
     public send: Send,
     @inject(RestBindings.SequenceActions.REJECT)
     public reject: Reject,
+    @inject(LoggerComponentKeys.CUSTOM_LOGGER_FN)
+    public logger: LoggerFunction,
   ) {}
-
-  log(message: string) {
-    console.log(message);
-  }
 
   async handle(context: RequestContext) {
     // should change to referer
@@ -39,18 +41,19 @@ export class MySequence implements SequenceHandler {
       const {request, response} = context;
 
       const route = this.findRoute(request);
-      const args = await parseOperationArgs(request, route);
+      const args = await this.parseParams(request, route);
 
       const startDate = new Date();
-      this.log('STARTING AT ' + startDate.toLocaleTimeString());
-      this.log('HOST: ' + context.request.headers.host);
-      this.log('REFERER: ' + context.request.headers.referer);
-      this.log('USER AGENT: ' + context.request.headers['user-agent']);
-      this.log('IP: ' + context.request.socket.remoteAddress);
+      this.logger(2, '****** STARTING *****');
+      // this.log('STARTING AT ' + startDate.toLocaleTimeString());
+      // this.log('HOST: ' + context.request.headers.host);
+      // this.log('REFERER: ' + context.request.headers.referer);
+      // this.log('USER AGENT: ' + context.request.headers['user-agent']);
+      // this.log('IP: ' + context.request.socket.remoteAddress);
       const result = await this.invoke(route, args);
       this.send(response, result);
       const endDate = new Date();
-      this.log('CLOSING AT ' + endDate.toLocaleTimeString());
+      // this.log('CLOSING AT ' + endDate.toLocaleTimeString());
     } else {
       this.reject(context, {name: '403', message: 'Not allowed'});
     }

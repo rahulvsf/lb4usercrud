@@ -6,7 +6,7 @@ export class LoggerComponent implements Component {
   providers?: ProviderMap;
   constructor() {
     this.providers = {
-      [LoggerComponentKeys.CUSTOM_LOGGER.key]: LoggerProvider,
+      [LoggerComponentKeys.CUSTOM_LOGGER_FN.key]: LoggerProvider,
     };
   }
 }
