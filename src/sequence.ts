@@ -81,15 +81,11 @@ export class MySequence implements SequenceHandler {
         authUser.role.permissions,
       );
 
-      console.log('USER PERMISSIONS: ', permissions);
-
       // check access
       const isAccessAllowed: boolean = await this.checkAuthorization(
         permissions,
         request,
       );
-
-      console.log('ACCESS ALLOWED: ', isAccessAllowed);
 
       if (!isAccessAllowed) {
         throw new HttpErrors.Forbidden(AuthorizeErrorKeys.NotAllowedAccess);
