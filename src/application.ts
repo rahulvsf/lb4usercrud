@@ -7,6 +7,7 @@ import {
   RestExplorerComponent,
 } from '@loopback/rest-explorer';
 import {ServiceMixin} from '@loopback/service-proxy';
+import {AuthenticationComponent} from 'loopback4-authentication';
 import path from 'path';
 import {LoggerComponent} from './components/logger';
 import {jwtMiddleware} from './middleware/jwtheader';
@@ -35,6 +36,8 @@ export class UserappApplication extends BootMixin(
     this.component(RestExplorerComponent);
     // initialize custom winston logger component
     this.component(LoggerComponent);
+    // initialize Auth component from loopback
+    this.component(AuthenticationComponent);
 
     this.projectRoot = __dirname;
     // Customize @loopback/boot Booter Conventions here
