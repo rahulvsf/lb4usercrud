@@ -7,23 +7,24 @@ import {
   Where,
 } from '@loopback/repository';
 import {
-  post,
-  param,
+  del,
   get,
   getModelSchemaRef,
+  param,
   patch,
+  post,
   put,
-  del,
   requestBody,
   response,
 } from '@loopback/rest';
+import {authenticate, STRATEGY} from 'loopback4-authentication';
 import {Role} from '../models';
 import {RoleRepository} from '../repositories';
 
 export class RoleController {
   constructor(
     @repository(RoleRepository)
-    public roleRepository : RoleRepository,
+    public roleRepository: RoleRepository,
   ) {}
 
   @post('/roles')
@@ -52,9 +53,7 @@ export class RoleController {
     description: 'Role model count',
     content: {'application/json': {schema: CountSchema}},
   })
-  async count(
-    @param.where(Role) where?: Where<Role>,
-  ): Promise<Count> {
+  async count(@param.where(Role) where?: Where<Role>): Promise<Count> {
     return this.roleRepository.count(where);
   }
 
@@ -70,9 +69,7 @@ export class RoleController {
       },
     },
   })
-  async find(
-    @param.filter(Role) filter?: Filter<Role>,
-  ): Promise<Role[]> {
+  async find(@param.filter(Role) filter?: Filter<Role>): Promise<Role[]> {
     return this.roleRepository.find(filter);
   }
 
@@ -95,6 +92,7 @@ export class RoleController {
     return this.roleRepository.updateAll(role, where);
   }
 
+  @authenticate(STRATEGY.BEARER)
   @get('/roles/{id}')
   @response(200, {
     description: 'Role model instance',
@@ -106,7 +104,7 @@ export class RoleController {
   })
   async findById(
     @param.path.number('id') id: number,
-    @param.filter(Role, {exclude: 'where'}) filter?: FilterExcludingWhere<Role>
+    @param.filter(Role, {exclude: 'where'}) filter?: FilterExcludingWhere<Role>,
   ): Promise<Role> {
     return this.roleRepository.findById(id, filter);
   }
