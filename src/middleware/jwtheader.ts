@@ -12,8 +12,14 @@ export const jwtMiddleware: Middleware = async (
   const {request} = context;
 
   const userId = request.headers.cookie?.split('=')[1];
+  // emulate permissions array
+  const permissions = ['ViewUser'];
+  const rolePermissions = ['UpdateUser', 'UpdateRole', 'ViewRole'];
   if (userId) {
-    const token = jwt.sign({userId}, process.env.JWT_SECRET as string);
+    const token = jwt.sign(
+      {userId, permissions, role: {permissions: rolePermissions}},
+      process.env.JWT_SECRET as string,
+    );
     request.headers.authorization = `Bearer ${token}`;
   }
 

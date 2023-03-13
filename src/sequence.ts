@@ -14,6 +14,12 @@ import {
 } from '@loopback/rest';
 import * as dotenv from 'dotenv';
 import {AuthenticateFn, AuthenticationBindings} from 'loopback4-authentication';
+import {
+  AuthorizationBindings,
+  AuthorizeErrorKeys,
+  AuthorizeFn,
+  UserPermissionsFn,
+} from 'loopback4-authorization';
 import {LoggerComponentKeys, LogTypes} from './components/logger/logger.keys';
 import {LoggerFunction} from './components/logger/logger.types';
 import {jwtMiddleware} from './middleware/jwtheader';
@@ -39,6 +45,10 @@ export class MySequence implements SequenceHandler {
     public logger: LoggerFunction,
     @inject(AuthenticationBindings.USER_AUTH_ACTION)
     protected authenticateRequest: AuthenticateFn<User>,
+    @inject(AuthorizationBindings.USER_PERMISSIONS)
+    private readonly getPermissions: UserPermissionsFn<string>,
+    @inject(AuthorizationBindings.AUTHORIZE_ACTION)
+    protected checkAuthorization: AuthorizeFn,
   ) {}
 
   async handle(context: RequestContext): Promise<void> {
@@ -64,7 +74,26 @@ export class MySequence implements SequenceHandler {
       this.logStarting(context);
 
       const authUser: User = await this.authenticateRequest(request);
-      console.log(authUser);
+
+      // get permissions for user
+      const permissions = this.getPermissions(
+        authUser.permissions,
+        authUser.role.permissions,
+      );
+
+      console.log('USER PERMISSIONS: ', permissions);
+
+      // check access
+      const isAccessAllowed: boolean = await this.checkAuthorization(
+        permissions,
+        request,
+      );
+
+      console.log('ACCESS ALLOWED: ', isAccessAllowed);
+
+      if (!isAccessAllowed) {
+        throw new HttpErrors.Forbidden(AuthorizeErrorKeys.NotAllowedAccess);
+      }
 
       const result = await this.invoke(route, args);
       this.send(response, result);

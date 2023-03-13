@@ -18,6 +18,8 @@ import {
   response,
 } from '@loopback/rest';
 import {authenticate, STRATEGY} from 'loopback4-authentication';
+import {authorize} from 'loopback4-authorization';
+import {UserPermissions} from '../enums/permission';
 import {Role} from '../models';
 import {RoleRepository} from '../repositories';
 
@@ -93,6 +95,7 @@ export class RoleController {
   }
 
   @authenticate(STRATEGY.BEARER)
+  @authorize({permissions: [UserPermissions.ViewRole]})
   @get('/roles/{id}')
   @response(200, {
     description: 'Role model instance',

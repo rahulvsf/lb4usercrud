@@ -44,10 +44,10 @@ export class UserappApplication extends BootMixin(
     // initialize Auth component from loopback
     this.component(AuthenticationComponent);
 
-    this.component(AuthorizationComponent);
     this.bind(AuthorizationBindings.CONFIG).to({
       allowAlwaysPaths: ['/explorer'],
     });
+    this.component(AuthorizationComponent);
 
     this.bind(Strategies.Passport.BEARER_TOKEN_VERIFIER).toProvider(
       BearerTokenVerifierProvider,
