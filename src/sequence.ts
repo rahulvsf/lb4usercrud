@@ -13,9 +13,11 @@ import {
   SequenceHandler,
 } from '@loopback/rest';
 import * as dotenv from 'dotenv';
+import {AuthenticateFn, AuthenticationBindings} from 'loopback4-authentication';
 import {LoggerComponentKeys, LogTypes} from './components/logger/logger.keys';
 import {LoggerFunction} from './components/logger/logger.types';
 import {jwtMiddleware} from './middleware/jwtheader';
+import {User} from './models';
 dotenv.config();
 
 export class MySequence implements SequenceHandler {
@@ -35,6 +37,8 @@ export class MySequence implements SequenceHandler {
     public reject: Reject,
     @inject(LoggerComponentKeys.CUSTOM_LOGGER_FN)
     public logger: LoggerFunction,
+    @inject(AuthenticationBindings.USER_AUTH_ACTION)
+    protected authenticateRequest: AuthenticateFn<User>,
   ) {}
 
   async handle(context: RequestContext): Promise<void> {
@@ -58,6 +62,10 @@ export class MySequence implements SequenceHandler {
       const args = await this.parseParams(request, route);
 
       this.logStarting(context);
+
+      const authUser: User = await this.authenticateRequest(request);
+      console.log(authUser);
+
       const result = await this.invoke(route, args);
       this.send(response, result);
       this.logEnding();
