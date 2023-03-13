@@ -1,8 +1,11 @@
 import {Entity, model, property} from '@loopback/repository';
+import {Permissions} from 'loopback4-authorization';
 import {Roles} from '../enums/roles';
 
-@model()
-export class Role extends Entity {
+@model({
+  name: 'roles',
+})
+export class Role extends Entity implements Permissions<String> {
   @property({
     type: 'number',
     id: true,
@@ -34,6 +37,12 @@ export class Role extends Entity {
     type: 'number',
   })
   userId?: number;
+
+  @property({
+    type: 'array',
+    itemType: 'string',
+  })
+  permissions: String[];
 
   constructor(data?: Partial<Role>) {
     super(data);
