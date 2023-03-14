@@ -34,7 +34,7 @@ export class Role extends Entity implements Permissions<String> {
   @property({
     type: 'number',
   })
-  userId?: number;
+  usersId?: number;
 
   @property({
     type: 'array',

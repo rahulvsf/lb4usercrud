@@ -30,7 +30,7 @@ export class Customer extends Entity {
   @property({
     type: 'number',
   })
-  userId?: number;
+  usersId?: number;
 
   constructor(data?: Partial<Customer>) {
     super(data);
