@@ -1,11 +1,16 @@
 {
   "ids": {
-    "User": 4
+    "User": 4,
+    "users": 3
   },
   "models": {
     "User": {
       "1": "{\"id\":1,\"fname\":\"john\",\"mname\":\"james\",\"lname\":\"doe\",\"email\":\"jj@test.com\",\"phone\":\"123456789\",\"role\":\"superadmin\",\"address\":\"No 12, 123 street\",\"created\":\"2022-12-12\",\"modified\":\"2022-12-13\"}",
       "2": "{\"id\":2,\"fname\":\"dunkirk\",\"mname\":\"lolli\",\"lname\":\"rester\",\"email\":\"rester@anonymous.com\",\"phone\":\"9990001231\",\"role\":\"admin\",\"address\":\"No 12, 124 street\",\"created\":\"2022-12-12\",\"modified\":\"2022-12-13\"}"
+    },
+    "users": {
+      "1": "{\"deleted\":false,\"fname\":\"Insom\",\"mname\":\"Ipsum\",\"lname\":\"Lorem\",\"email\":\"lorem@anonymous.com\",\"phone\":\"+911234567888\",\"address\":\"no 123, street main\",\"created\":\"14/3/2023\",\"username\":\"Ins\",\"password\":\"123\",\"id\":1}",
+      "2": "{\"deleted\":true,\"fname\":\"Insom2\",\"mname\":\"Ipsum2\",\"lname\":\"Lorem2\",\"email\":\"lorem2@anonymous.com\",\"phone\":\"+911214567888\",\"address\":\"no 113, street main\",\"created\":\"14/3/2023\",\"username\":\"Ins2\",\"password\":\"123\",\"id\":2,\"deletedOn\":\"2023-03-14T11:48:29.323Z\"}"
     }
   }
 }

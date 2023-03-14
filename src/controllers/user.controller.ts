@@ -28,6 +28,8 @@ export class UserController {
     public userRepository: UserRepository,
   ) {}
 
+  @authenticate(STRATEGY.BEARER)
+  @authorize({permissions: ['*']})
   @post('/users')
   @response(200, {
     description: 'User model instance',
@@ -140,6 +142,8 @@ export class UserController {
     await this.userRepository.replaceById(id, user);
   }
 
+  @authenticate(STRATEGY.BEARER)
+  @authorize({permissions: ['*']})
   @del('/users/{id}')
   @response(204, {
     description: 'User DELETE success',
