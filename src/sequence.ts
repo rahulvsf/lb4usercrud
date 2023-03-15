@@ -71,27 +71,23 @@ export class MySequence implements SequenceHandler {
       const route = this.findRoute(request);
       const args = await this.parseParams(request, route);
 
-      // handling users endpoint through facade - REST connector
-      if (route.path != '/users') {
-        const authUser: User = await this.authenticateRequest(request);
+      const authUser: User = await this.authenticateRequest(request);
 
-        // get permissions for user
-        const permissions = this.getPermissions(
-          authUser.permissions,
-          authUser.role.permissions,
-        );
+      // get permissions for user
+      const permissions = this.getPermissions(
+        authUser.permissions,
+        authUser.role.permissions,
+      );
 
-        // check access
-        const isAccessAllowed: boolean = await this.checkAuthorization(
-          permissions,
-          request,
-        );
+      // check access
+      const isAccessAllowed: boolean = await this.checkAuthorization(
+        permissions,
+        request,
+      );
 
-        if (!isAccessAllowed) {
-          throw new HttpErrors.Forbidden(AuthorizeErrorKeys.NotAllowedAccess);
-        }
+      if (!isAccessAllowed) {
+        throw new HttpErrors.Forbidden(AuthorizeErrorKeys.NotAllowedAccess);
       }
-
       this.logStarting(context);
 
       const result = await this.invoke(route, args);
