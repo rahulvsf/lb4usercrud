@@ -6,6 +6,7 @@ import {Customer, Role, User, UserRelations} from '../models';
 import {CustomerRepository} from './customer.repository';
 import {RoleRepository} from './role.repository';
 
+// soft crud repository for soft delete
 export class UserRepository extends SoftCrudRepository<
   User,
   typeof User.prototype.id,

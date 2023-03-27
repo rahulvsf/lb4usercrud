@@ -3,6 +3,7 @@ import {juggler} from '@loopback/repository';
 import * as dotenv from 'dotenv';
 dotenv.config();
 
+// new postgres database for roles and customers
 const config = {
   name: 'postgres',
   connector: 'postgresql',

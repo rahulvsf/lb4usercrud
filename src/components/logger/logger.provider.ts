@@ -3,6 +3,7 @@ import winston from 'winston';
 import {LogTypes} from './logger.keys';
 import {LoggerFunction} from './logger.types';
 
+// 3 --> error.log, combined.log and log to console options
 const loggerOptions = {
   level: 'info',
   format: winston.format.json(),
@@ -13,6 +14,8 @@ const loggerOptions = {
   ],
 };
 
+// Logger provider for exporting a
+// winston logger
 export class LoggerProvider implements Provider<LoggerFunction> {
   winston: winston.Logger;
 
@@ -27,6 +30,7 @@ export class LoggerProvider implements Provider<LoggerFunction> {
   }
 
   loggerAction(level: number, message: string) {
+    // error and info logging
     switch (level) {
       case LogTypes.ERROR:
         this.winston.error(message);

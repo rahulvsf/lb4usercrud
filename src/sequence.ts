@@ -26,6 +26,7 @@ import {jwtMiddleware} from './middleware/jwtheader';
 import {User} from './models';
 dotenv.config();
 
+// custom sequence
 export class MySequence implements SequenceHandler {
   @inject(SequenceActions.INVOKE_MIDDLEWARE, {optional: true})
   protected invokeMiddleware: InvokeMiddleware = () => false;
@@ -71,6 +72,7 @@ export class MySequence implements SequenceHandler {
       const route = this.findRoute(request);
       const args = await this.parseParams(request, route);
 
+      // get auth user
       const authUser: User = await this.authenticateRequest(request);
 
       // get permissions for user
@@ -88,10 +90,12 @@ export class MySequence implements SequenceHandler {
       if (!isAccessAllowed) {
         throw new HttpErrors.Forbidden(AuthorizeErrorKeys.NotAllowedAccess);
       }
+      // start logging
       this.logStarting(context);
 
       const result = await this.invoke(route, args);
       this.send(response, result);
+      // end logging
       this.logEnding();
     } catch (error) {
       this.logError();

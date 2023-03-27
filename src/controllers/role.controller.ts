@@ -94,6 +94,7 @@ export class RoleController {
     return this.roleRepository.updateAll(role, where);
   }
 
+  // authenticate and check for proper authorization
   @authenticate(STRATEGY.BEARER)
   @authorize({permissions: [UserPermissions.ViewRole]})
   @get('/roles/{id}')

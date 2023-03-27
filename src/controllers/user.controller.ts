@@ -22,6 +22,8 @@ import {authorize} from 'loopback4-authorization';
 import {User} from '../models';
 import {UserRepository} from '../repositories';
 
+// auto generated a usercontroller class
+// with CRUD
 export class UserController {
   constructor(
     @repository(UserRepository)

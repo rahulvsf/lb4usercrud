@@ -5,6 +5,10 @@ dotenv.config();
 
 import * as jwt from 'jsonwebtoken';
 
+// custom middlware
+// 1. attach bearer token sent as a cookie
+// --> userId, and emulate permissions array
+// send it to the next process
 export const jwtMiddleware: Middleware = async (
   context: MiddlewareContext,
   next: Next,

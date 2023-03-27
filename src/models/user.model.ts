@@ -60,9 +60,11 @@ export class User
   })
   created: string;
 
+  // has one relation to customer
   @hasOne(() => Customer)
   customer: Customer;
 
+  // has one relation to role
   @hasOne(() => Role)
   role: Role;
 
