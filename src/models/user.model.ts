@@ -1,6 +1,6 @@
 import {hasOne, model, property} from '@loopback/repository';
 import {IAuthUser} from 'loopback4-authentication';
-import {UserPermissionsOverride} from 'loopback4-authorization';
+import {UserPermission, UserPermissionsOverride} from 'loopback4-authorization';
 import {SoftDeleteEntity} from 'loopback4-soft-delete';
 import {Customer} from './customer.model';
 import {Role} from './role.model';
@@ -76,6 +76,12 @@ export class User
     type: 'string',
   })
   password?: string;
+
+  @property({
+    type: 'array',
+    itemType: 'object',
+  })
+  permissions: UserPermission<string>[];
 
   constructor(data?: Partial<User>) {
     super(data);
