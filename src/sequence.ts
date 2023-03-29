@@ -53,14 +53,6 @@ export class MySequence implements SequenceHandler {
 
   async handle(context: RequestContext): Promise<void> {
     try {
-      if (
-        // TODO: should change to referer
-        !context.request.headers.host?.includes(
-          process.env.ALLOWED_ORIGIN as string,
-        )
-      ) {
-        throw new HttpErrors.Forbidden('INVALID ORIGIN');
-      }
       const {request, response} = context;
 
       const finished = await this.invokeMiddleware(context, {
