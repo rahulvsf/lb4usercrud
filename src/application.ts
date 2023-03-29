@@ -13,8 +13,6 @@ import {
   AuthorizationComponent,
 } from 'loopback4-authorization';
 import path from 'path';
-import {LoggerComponent} from './components/logger';
-import {jwtMiddleware} from './middleware/jwtheader';
 import {BearerTokenVerifierProvider} from './providers/BearerToken';
 import {MySequence} from './sequence';
 
@@ -25,8 +23,6 @@ export class UserappApplication extends BootMixin(
 ) {
   constructor(options: ApplicationConfig = {}) {
     super(options);
-    // confirgure middleware
-    this.middleware(jwtMiddleware);
 
     // Set up the custom sequence
     this.sequence(MySequence);
@@ -39,8 +35,6 @@ export class UserappApplication extends BootMixin(
       path: '/explorer',
     });
     this.component(RestExplorerComponent);
-    // initialize custom winston logger component
-    this.component(LoggerComponent);
     // initialize Auth component from loopback
     this.component(AuthenticationComponent);
 
