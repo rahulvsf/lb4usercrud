@@ -17,7 +17,10 @@ import {
   requestBody,
   response,
 } from '@loopback/rest';
+import {authenticate, STRATEGY} from 'loopback4-authentication';
+import {authorize} from 'loopback4-authorization';
 import {User} from '../models';
+import {UserRepository} from '../repositories';
 
 export class UserController {
   constructor(
@@ -25,6 +28,8 @@ export class UserController {
     public userRepository: UserRepository,
   ) {}
 
+  @authenticate(STRATEGY.BEARER)
+  @authorize({permissions: ['*']})
   @post('/users')
   @response(200, {
     description: 'User model instance',
@@ -55,6 +60,8 @@ export class UserController {
     return this.userRepository.count(where);
   }
 
+  @authenticate(STRATEGY.BEARER)
+  @authorize({permissions: ['*']})
   @get('/users')
   @response(200, {
     description: 'Array of User model instances',
@@ -135,6 +142,8 @@ export class UserController {
     await this.userRepository.replaceById(id, user);
   }
 
+  @authenticate(STRATEGY.BEARER)
+  @authorize({permissions: ['*']})
   @del('/users/{id}')
   @response(204, {
     description: 'User DELETE success',

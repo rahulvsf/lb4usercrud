@@ -7,6 +7,11 @@ import {
   RestExplorerComponent,
 } from '@loopback/rest-explorer';
 import {ServiceMixin} from '@loopback/service-proxy';
+import {AuthenticationComponent, Strategies} from 'loopback4-authentication';
+import {
+  AuthorizationBindings,
+  AuthorizationComponent,
+} from 'loopback4-authorization';
 import path from 'path';
 
 import {LoggerComponent} from './components/logger';
@@ -35,6 +40,17 @@ export class UserappApplication extends BootMixin(
       path: '/explorer',
     });
     this.component(RestExplorerComponent);
+    // initialize Auth component from loopback
+    this.component(AuthenticationComponent);
+
+    this.bind(AuthorizationBindings.CONFIG).to({
+      allowAlwaysPaths: ['/explorer'],
+    });
+    this.component(AuthorizationComponent);
+
+    this.bind(Strategies.Passport.BEARER_TOKEN_VERIFIER).toProvider(
+      BearerTokenVerifierProvider,
+    );
 
     // initialize custom winston logger component
     this.component(LoggerComponent);
