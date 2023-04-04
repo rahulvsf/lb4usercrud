@@ -7,12 +7,8 @@ import {
   RestExplorerComponent,
 } from '@loopback/rest-explorer';
 import {ServiceMixin} from '@loopback/service-proxy';
-import {AuthenticationComponent, Strategies} from 'loopback4-authentication';
-import {
-  AuthorizationBindings,
-  AuthorizationComponent,
-} from 'loopback4-authorization';
 import path from 'path';
+
 import {LoggerComponent} from './components/logger';
 import {jwtMiddleware} from './middleware/jwtheader';
 import {BearerTokenVerifierProvider} from './providers/BearerToken';
@@ -39,6 +35,7 @@ export class UserappApplication extends BootMixin(
       path: '/explorer',
     });
     this.component(RestExplorerComponent);
+
     // initialize custom winston logger component
     this.component(LoggerComponent);
     // initialize Auth component from loopback
@@ -58,8 +55,8 @@ export class UserappApplication extends BootMixin(
     this.bootOptions = {
       controllers: {
         // Customize ControllerBooter Conventions here
-        dirs: ['controllers'],
-        extensions: ['.controller.js'],
+        dirs: ['controllers', 'bootercontrollers'],
+        extensions: ['.controller.js', '.booter.js'],
         nested: true,
       },
     };
